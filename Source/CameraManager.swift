@@ -9,7 +9,7 @@
 import AVFoundation
 import CoreImage
 
-class CameraManager {
+public class CameraManager {
   // MARK: - Properties
   
   lazy var captureSession: AVCaptureSession = {
@@ -22,20 +22,20 @@ class CameraManager {
   var sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
   var metaDataOutputDelegate: AVCaptureMetadataOutputObjectsDelegate?
   
-  init(sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate) {
+  public init(sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate) {
     self.sampleBufferOutputDelegate = sampleBufferOutputDelegate
   }
   
-  init(metaDataOutputdelegate: AVCaptureMetadataOutputObjectsDelegate) {
+  public init(metaDataOutputdelegate: AVCaptureMetadataOutputObjectsDelegate) {
     self.metaDataOutputDelegate = metaDataOutputdelegate
   }
   
-  init(sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate, metaDataOutputdelegate: AVCaptureMetadataOutputObjectsDelegate) {
+  public init(sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate, metaDataOutputdelegate: AVCaptureMetadataOutputObjectsDelegate) {
     self.sampleBufferOutputDelegate = sampleBufferOutputDelegate
     self.metaDataOutputDelegate = metaDataOutputdelegate
   }
   
-  func setupCamera() {
+  public func setupCamera() {
     if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
       setupCaptureSession()
     } else {
@@ -49,20 +49,20 @@ class CameraManager {
     }
   }
   
-  func startCamera() {
+  public func startCamera() {
     if !captureSession.isRunning {
       captureSession.startRunning()
     }
   }
   
-  func stopCamera() {
+  public func stopCamera() {
     if captureSession.isRunning {
       captureSession.stopRunning()
     }
   }
   
   #if os(iOS)
-  func addPreviewLayer(view: UIView) {
+  public func addPreviewLayer(view: UIView) {
     let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
     previewLayer.frame = view.bounds
     previewLayer.backgroundColor = UIColor.black.cgColor
@@ -85,7 +85,7 @@ class CameraManager {
     #endif
   }
   
-  func setupCaptureSession() {
+  public func setupCaptureSession() {
     guard captureSession.inputs.isEmpty else { return }
     guard let camera = findCamera() else {
       print("No camera found")
