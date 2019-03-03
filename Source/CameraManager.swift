@@ -10,8 +10,6 @@ import AVFoundation
 import CoreImage
 
 public class CameraManager {
-  // MARK: - Properties
-  
   lazy var captureSession: AVCaptureSession = {
     let session = AVCaptureSession()
     session.sessionPreset = .high
@@ -19,21 +17,13 @@ public class CameraManager {
   }()
   
   let cameraQueue = DispatchQueue.global(qos: .userInteractive)
-  var sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
-  var metaDataOutputDelegate: AVCaptureMetadataOutputObjectsDelegate?
+  public let photoOutput = AVCapturePhotoOutput()
   
-  public init(sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate) {
-    self.sampleBufferOutputDelegate = sampleBufferOutputDelegate
-  }
-  
-  public init(metaDataOutputdelegate: AVCaptureMetadataOutputObjectsDelegate) {
-    self.metaDataOutputDelegate = metaDataOutputdelegate
-  }
-  
-  public init(sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate, metaDataOutputdelegate: AVCaptureMetadataOutputObjectsDelegate) {
-    self.sampleBufferOutputDelegate = sampleBufferOutputDelegate
-    self.metaDataOutputDelegate = metaDataOutputdelegate
-  }
+  public var sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
+  public var metaDataOutputDelegate: AVCaptureMetadataOutputObjectsDelegate?
+  public var photoCaptureDelegate: AVCapturePhotoCaptureDelegate?
+
+  public init() {}
   
   public func setupCamera() {
     if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
@@ -85,7 +75,7 @@ public class CameraManager {
     #endif
   }
   
-  public func setupCaptureSession() {
+  func setupCaptureSession() {
     guard captureSession.inputs.isEmpty else { return }
     guard let camera = findCamera() else {
       print("No camera found")
@@ -118,11 +108,21 @@ public class CameraManager {
       
       if let metaDataOutputDelegate = self.metaDataOutputDelegate {
         let metaDataOutput = AVCaptureMetadataOutput()
+        captureSession.addOutput(metaDataOutput)
         metaDataOutput.setMetadataObjectsDelegate(metaDataOutputDelegate, queue: cameraQueue)
         metaDataOutput.metadataObjectTypes = metaDataOutput.availableMetadataObjectTypes
-        captureSession.addOutput(metaDataOutput)
       }
       
+      // Add photo output.
+      if captureSession.canAddOutput(photoOutput) {
+        captureSession.addOutput(photoOutput)
+        
+        photoOutput.isHighResolutionCaptureEnabled = true
+        photoOutput.isLivePhotoCaptureEnabled = photoOutput.isLivePhotoCaptureSupported
+      } else {
+        print("Could not add photo output to the session")
+      }
+      captureSession.commitConfiguration()
     } catch let error {
       print("Error creating capture session: \(error)")
       return
