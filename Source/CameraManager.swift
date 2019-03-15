@@ -128,5 +128,58 @@ public class CameraManager {
       return
     }
   }
+  
+  @discardableResult public func switchCamera() -> AVCaptureDevice.Position {
+    captureSession.beginConfiguration()
+    
+    // Remove existing input
+    guard let currentCameraInput: AVCaptureInput = captureSession.inputs.first else {
+      return AVCaptureDevice.Position.unspecified
+    }
+    
+    captureSession.removeInput(currentCameraInput)
+    
+    // Get new input
+    var newCamera: AVCaptureDevice! = nil
+    if let input = currentCameraInput as? AVCaptureDeviceInput {
+      if (input.device.position == .back) {
+        newCamera = cameraWithPosition(position: .front)
+      } else {
+        newCamera = cameraWithPosition(position: .back)
+      }
+    }
+    
+    // Add input to session
+    var err: NSError?
+    var newVideoInput: AVCaptureDeviceInput!
+    do {
+      newVideoInput = try AVCaptureDeviceInput(device: newCamera)
+    } catch let err1 as NSError {
+      err = err1
+      newVideoInput = nil
+    }
+    
+    if newVideoInput == nil, let error = err {
+      print("Error creating capture device input: \(error.localizedDescription)")
+    } else {
+      captureSession.addInput(newVideoInput)
+    }
+    
+    //Commit all the configuration changes at once
+    captureSession.commitConfiguration()
+    return newVideoInput.device.position
+  }
+  
+  // Find a camera with the specified AVCaptureDevicePosition, returning nil if one is not found
+  func cameraWithPosition(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
+    let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .unspecified)
+    for device in discoverySession.devices {
+      if device.position == position {
+        return device
+      }
+    }
+    
+    return nil
+  }
 }
 
