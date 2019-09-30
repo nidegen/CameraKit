@@ -36,8 +36,6 @@ class ViewController: UIViewController {
     cameraManager.setupCamera()
     cameraManager.addPreviewLayer(view: view)
     cameraManager.startCamera()
-    
-    cameraManager.
   }
 }
 
