@@ -17,6 +17,7 @@ public struct CameraView: UIViewRepresentable {
   
   public func makeUIView(context: Context) -> UIView {
     let view = UIView()
+    view.backgroundColor = .white
     cameraManager.addPreviewLayer(view: view)
     return view
   }
