@@ -40,6 +40,9 @@ public class CameraManager {
   }
   
   public func startCamera() {
+    #if targetEnvironment(simulator)
+    return
+    #endif
     if !captureSession.isRunning {
       captureSession.startRunning()
     }
