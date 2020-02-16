@@ -53,6 +53,9 @@ public class CameraManager {
   
   #if os(iOS)
   public func addPreviewLayer(view: UIView) {
+    if captureSession.inputs.isEmpty {
+      return
+    }
     let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
     previewLayer.frame = view.bounds
     previewLayer.backgroundColor = UIColor.black.cgColor
