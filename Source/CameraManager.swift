@@ -8,6 +8,7 @@
 
 import AVFoundation
 import CoreImage
+import UIKit
 
 public class CameraManager {
   lazy var captureSession: AVCaptureSession = {
@@ -188,4 +189,3 @@ public class CameraManager {
     return nil
   }
 }
-
