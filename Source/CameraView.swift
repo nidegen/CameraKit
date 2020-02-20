@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import AVKit
 
 public struct CameraView: UIViewRepresentable {
   let cameraManager: CameraManager
@@ -22,5 +23,11 @@ public struct CameraView: UIViewRepresentable {
     return view
   }
   
-  public func updateUIView(_ uiView: UIView, context: Context) {}
+  public func updateUIView(_ uiView: UIView, context: Context) {
+    for layer in uiView.layer.sublayers ?? [] {
+      if let previewLayer = layer as? AVCaptureVideoPreviewLayer {
+        previewLayer.frame = uiView.bounds
+      }
+    }
+  }
 }

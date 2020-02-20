@@ -23,7 +23,6 @@ public class CameraManager: NSObject {
   public var sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
   public var metaDataOutputDelegate: AVCaptureMetadataOutputObjectsDelegate!
   public var photoCaptureDelegate: AVCapturePhotoCaptureDelegate?
-
   public override init() {
     super.init()
     metaDataOutputDelegate = self
