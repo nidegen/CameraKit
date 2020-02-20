@@ -9,7 +9,7 @@
 import SwiftUI
 
 public struct CameraView: UIViewRepresentable {
-  var cameraManager: CameraManager
+  let cameraManager: CameraManager
   
   public init(cameraManager: CameraManager) {
     self.cameraManager = cameraManager
