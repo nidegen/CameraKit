@@ -10,7 +10,7 @@ import AVFoundation
 import CoreImage
 import UIKit
 
-public class CameraManager {
+public class CameraManager: NSObject {
   lazy var captureSession: AVCaptureSession = {
     let session = AVCaptureSession()
     session.sessionPreset = .high
@@ -21,10 +21,16 @@ public class CameraManager {
   public let photoOutput = AVCapturePhotoOutput()
   
   public var sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
-  public var metaDataOutputDelegate: AVCaptureMetadataOutputObjectsDelegate?
+  public var metaDataOutputDelegate: AVCaptureMetadataOutputObjectsDelegate!
   public var photoCaptureDelegate: AVCapturePhotoCaptureDelegate?
 
-  public init() {}
+  public override init() {
+    super.init()
+    metaDataOutputDelegate = self
+  }
+  
+  public var onDetectedQRString: ((String)->())?
+  var lastDetectedQRString = ""
   
   public func setupCamera() {
     if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
@@ -113,12 +119,10 @@ public class CameraManager {
       }
       
       
-      if let metaDataOutputDelegate = self.metaDataOutputDelegate {
-        let metaDataOutput = AVCaptureMetadataOutput()
-        captureSession.addOutput(metaDataOutput)
-        metaDataOutput.setMetadataObjectsDelegate(metaDataOutputDelegate, queue: cameraQueue)
-        metaDataOutput.metadataObjectTypes = metaDataOutput.availableMetadataObjectTypes
-      }
+      let metaDataOutput = AVCaptureMetadataOutput()
+      captureSession.addOutput(metaDataOutput)
+      metaDataOutput.setMetadataObjectsDelegate(metaDataOutputDelegate, queue: cameraQueue)
+      metaDataOutput.metadataObjectTypes = metaDataOutput.availableMetadataObjectTypes
       
       // Add photo output.
       if captureSession.canAddOutput(photoOutput) {
@@ -187,5 +191,28 @@ public class CameraManager {
     }
     
     return nil
+  }
+}
+
+extension CameraManager: AVCaptureMetadataOutputObjectsDelegate {
+  public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+    if  metadataObjects.count == 0 {
+      return
+    }
+    
+    // Get the metadata object.
+    guard let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject else {
+      return
+    }
+    if metadataObj.type == AVMetadataObject.ObjectType.qr {
+      let qrString = metadataObj.stringValue ?? ""
+      
+      if qrString != lastDetectedQRString {
+        DispatchQueue.main.sync {
+          self.onDetectedQRString?(qrString)
+        }
+        lastDetectedQRString = qrString
+      }
+    }
   }
 }
