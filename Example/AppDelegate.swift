@@ -7,9 +7,14 @@
 //
 
 import UIKit
+import SwiftUI
+
+import CameraKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+  
+  var cameraManager = CameraManager()
   
   var window: UIWindow?
   
@@ -17,7 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)
     
-    window!.rootViewController = ViewController()
+//    let vc = ViewController()
+//    vc.cameraManager = cameraManager
+//    window!.rootViewController = vc
+    cameraManager.setupCamera()
+    window!.rootViewController = UIHostingController(rootView: CameraView(cameraManager: cameraManager).edgesIgnoringSafeArea(.all))
+    cameraManager.startCamera()
+    
+    
     window!.makeKeyAndVisible()
     
     return true

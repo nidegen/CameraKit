@@ -15,6 +15,7 @@
 		29FC5035222BD9FE004DC389 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29FC5033222BD9FE004DC389 /* LaunchScreen.storyboard */; };
 		29FC503C222BDB3B004DC389 /* CameraKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E43B652180EEE2008BFDD0 /* CameraKit.framework */; };
 		29FC503D222BDB3B004DC389 /* CameraKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 29E43B652180EEE2008BFDD0 /* CameraKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3706A10D240AA9370015FF8F /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706A10C240AA9370015FF8F /* CameraViewController.swift */; };
 		37B406CC23E8D19C008CA34A /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B406CB23E8D19C008CA34A /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		29FC5031222BD9FE004DC389 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29FC5034222BD9FE004DC389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		29FC5036222BD9FE004DC389 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3706A10C240AA9370015FF8F /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		37B406CB23E8D19C008CA34A /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,6 +110,7 @@
 			children = (
 				29E43B712180EF1F008BFDD0 /* CameraManager.swift */,
 				37B406CB23E8D19C008CA34A /* CameraView.swift */,
+				3706A10C240AA9370015FF8F /* CameraViewController.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 					};
 					29FC5027222BD9F6004DC389 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -239,6 +243,7 @@
 			files = (
 				29E43B722180EF1F008BFDD0 /* CameraManager.swift in Sources */,
 				37B406CC23E8D19C008CA34A /* CameraView.swift in Sources */,
+				3706A10D240AA9370015FF8F /* CameraViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,14 +461,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C56P24GUF3;
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nide.camerakit-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -476,14 +481,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C56P24GUF3;
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nide.camerakit-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

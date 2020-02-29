@@ -7,27 +7,25 @@
 //
 
 import SwiftUI
-import AVKit
 
-public struct CameraView: UIViewRepresentable {
-  let cameraManager: CameraManager
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+public struct CameraView: UIViewControllerRepresentable {
+  
+  public let cameraManager: CameraManager
+  
+  public typealias UIViewControllerType = CameraViewController
   
   public init(cameraManager: CameraManager) {
     self.cameraManager = cameraManager
   }
   
-  public func makeUIView(context: Context) -> UIView {
-    let view = UIView()
-    view.backgroundColor = .white
-    cameraManager.addPreviewLayer(view: view)
-    return view
+  public func makeUIViewController(context: UIViewControllerRepresentableContext<CameraView>) -> CameraViewController {
+    
+    let vc = CameraViewController()
+    vc.cameraManager = self.cameraManager
+    return vc
   }
   
-  public func updateUIView(_ uiView: UIView, context: Context) {
-    for layer in uiView.layer.sublayers ?? [] {
-      if let previewLayer = layer as? AVCaptureVideoPreviewLayer {
-        previewLayer.frame = uiView.bounds
-      }
-    }
-  }
+  public func updateUIViewController(_ uiViewController: CameraViewController, context: UIViewControllerRepresentableContext<CameraView>) {}
 }
+

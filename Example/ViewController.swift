@@ -12,7 +12,7 @@ import AVKit
 import CameraKit
 
 class ViewController: UIViewController {
-  var cameraManager = CameraManager()
+  var cameraManager: CameraManager!
   let photoButton = UIButton(frame: .zero)
   
   override func viewDidLoad() {
