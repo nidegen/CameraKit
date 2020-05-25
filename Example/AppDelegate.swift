@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    vc.cameraManager = cameraManager
 //    window!.rootViewController = vc
     cameraManager.setupCamera()
-    window!.rootViewController = UIHostingController(rootView: CameraView(cameraManager: cameraManager).edgesIgnoringSafeArea(.all))
+    window!.rootViewController = UIHostingController(rootView: ContentView(cameraManager: cameraManager))
     cameraManager.startCamera()
     
     

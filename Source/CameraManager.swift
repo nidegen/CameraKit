@@ -23,12 +23,18 @@ public class CameraManager: NSObject {
   public var sampleBufferOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
   public var metaDataOutputDelegate: AVCaptureMetadataOutputObjectsDelegate!
   public var photoCaptureDelegate: AVCapturePhotoCaptureDelegate?
+  
   public override init() {
     super.init()
     metaDataOutputDelegate = self
   }
   
+  public var onDidCapturePhoto: ((AVCapturePhotoOutput, AVCapturePhoto, Error?)->())?
+  
   public var onDetectedQRString: ((String)->())?
+  
+  public var onDidCaptureSampleBuffer: ((String)->())?
+  
   var lastDetectedQRString = ""
   
   public func setupCamera() {
@@ -85,6 +91,19 @@ public class CameraManager: NSObject {
     #else
     print("OMG, it's that mythical new Apple product!!!")
     #endif
+  }
+  
+  func capturePhoto() {
+    guard let delegate = self.photoCaptureDelegate else { return }
+    let photoSettings = AVCapturePhotoSettings()
+    photoSettings.isHighResolutionPhotoEnabled = true
+    photoSettings.flashMode = .auto
+    
+    if let firstAvailablePreviewPhotoPixelFormatTypes = photoSettings.availablePreviewPhotoPixelFormatTypes.first {
+      photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: firstAvailablePreviewPhotoPixelFormatTypes]
+    }
+    
+    self.photoOutput.capturePhoto(with: photoSettings, delegate: delegate)
   }
   
   func setupCaptureSession() {
@@ -213,5 +232,11 @@ extension CameraManager: AVCaptureMetadataOutputObjectsDelegate {
         lastDetectedQRString = qrString
       }
     }
+  }
+}
+
+extension CameraManager: AVCapturePhotoCaptureDelegate {
+  public func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+    self.onDidCapturePhoto?(output, photo, error)
   }
 }

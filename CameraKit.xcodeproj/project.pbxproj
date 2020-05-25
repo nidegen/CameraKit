@@ -17,6 +17,7 @@
 		29FC503D222BDB3B004DC389 /* CameraKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 29E43B652180EEE2008BFDD0 /* CameraKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3706A10D240AA9370015FF8F /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706A10C240AA9370015FF8F /* CameraViewController.swift */; };
 		37B406CC23E8D19C008CA34A /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B406CB23E8D19C008CA34A /* CameraView.swift */; };
+		37B7C210247C1AE9001F04BD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B7C20F247C1AE9001F04BD /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		29FC5036222BD9FE004DC389 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3706A10C240AA9370015FF8F /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		37B406CB23E8D19C008CA34A /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		37B7C20F247C1AE9001F04BD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 			children = (
 				29FC502A222BD9F6004DC389 /* AppDelegate.swift */,
 				29FC502C222BD9F6004DC389 /* ViewController.swift */,
+				37B7C20F247C1AE9001F04BD /* ContentView.swift */,
 				29FC5031222BD9FE004DC389 /* Assets.xcassets */,
 				29FC5033222BD9FE004DC389 /* LaunchScreen.storyboard */,
 				29FC5036222BD9FE004DC389 /* Info.plist */,
@@ -253,6 +256,7 @@
 			files = (
 				29FC502D222BD9F6004DC389 /* ViewController.swift in Sources */,
 				29FC502B222BD9F6004DC389 /* AppDelegate.swift in Sources */,
+				37B7C210247C1AE9001F04BD /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

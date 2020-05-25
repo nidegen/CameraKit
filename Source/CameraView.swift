@@ -27,5 +27,10 @@ public struct CameraView: UIViewControllerRepresentable {
   }
   
   public func updateUIViewController(_ uiViewController: CameraViewController, context: UIViewControllerRepresentableContext<CameraView>) {}
+  
+  public func onQRStringDetected(perform action: ((String) -> Void)? = nil) -> CameraView {
+    self.cameraManager.onDetectedQRString = action
+    return self
+  }
 }
 
