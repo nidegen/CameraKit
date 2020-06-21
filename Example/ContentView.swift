@@ -17,9 +17,6 @@ struct ContentView: View {
       .onQRStringDetected { qrString in
         print(qrString)
       }
-      .onAppear {
-        self.cameraManager.startCamera()
-      }
       .edgesIgnoringSafeArea(.all)
   }
 }

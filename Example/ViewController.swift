@@ -33,7 +33,6 @@ class ViewController: UIViewController {
     
     cameraManager.metaDataOutputDelegate = self
     cameraManager.sampleBufferOutputDelegate = self
-    cameraManager.setupCamera()
     cameraManager.addPreviewLayer(view: view)
     cameraManager.startCamera()
   }

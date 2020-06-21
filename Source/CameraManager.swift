@@ -10,7 +10,11 @@ import AVFoundation
 import CoreImage
 import UIKit
 
-public class CameraManager: NSObject {
+public class CameraManager: NSObject, ObservableObject {
+  
+  @Published
+  var cameraAccessGranted = AVCaptureDevice.authorizationStatus(for: .video) == .authorized
+  
   lazy var captureSession: AVCaptureSession = {
     let session = AVCaptureSession()
     session.sessionPreset = .high
@@ -27,6 +31,9 @@ public class CameraManager: NSObject {
   public override init() {
     super.init()
     metaDataOutputDelegate = self
+    if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+      setupCaptureSession()
+    }
   }
   
   public var onDidCapturePhoto: ((AVCapturePhotoOutput, AVCapturePhoto, Error?)->())?
@@ -37,18 +44,13 @@ public class CameraManager: NSObject {
   
   var lastDetectedQRString = ""
   
-  public func setupCamera() {
-    if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
-      setupCaptureSession()
-    } else {
-      AVCaptureDevice.requestAccess(for: .video, completionHandler: { (authorized) in
-        DispatchQueue.main.async {
-          if authorized {
-            self.setupCaptureSession()
-          }
-        }
-      })
-    }
+  public func requestCameraAccess() {
+    AVCaptureDevice.requestAccess(for: .video, completionHandler: { granted in
+      DispatchQueue.main.async {
+        self.cameraAccessGranted = granted
+        self.setupCaptureSession()
+      }
+    })
   }
   
   public func startCamera() {

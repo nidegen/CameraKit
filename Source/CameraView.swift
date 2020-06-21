@@ -2,31 +2,49 @@
 //  CameraView.swift
 //  CameraKit
 //
-//  Created by Nicolas Degen on 03.02.20.
+//  Created by Nicolas Degen on 21.06.20.
 //  Copyright © 2020 Nicolas Degen. All rights reserved.
 //
 
 import SwiftUI
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-public struct CameraView: UIViewControllerRepresentable {
-  
-  public let cameraManager: CameraManager
-  
-  public typealias UIViewControllerType = CameraViewController
+import AVKit
+
+public struct CameraView: View {
+  @ObservedObject
+  public var cameraManager: CameraManager
   
   public init(cameraManager: CameraManager) {
     self.cameraManager = cameraManager
   }
   
-  public func makeUIViewController(context: UIViewControllerRepresentableContext<CameraView>) -> CameraViewController {
-    
-    let vc = CameraViewController()
-    vc.cameraManager = self.cameraManager
-    return vc
+  public init() {
+    self.cameraManager = CameraManager()
   }
   
-  public func updateUIViewController(_ uiViewController: CameraViewController, context: UIViewControllerRepresentableContext<CameraView>) {}
+  public var body: some View {
+    Group {
+      if cameraManager.cameraAccessGranted {
+        CameraPreviewWrapper(cameraManager: cameraManager)
+        .onAppear {
+          self.cameraManager.startCamera()
+        }
+      } else {
+        VStack {
+          Text("Camera Access not yet granted").font(.subheadline)
+          Button("Grant Access") {
+            self.cameraManager.requestCameraAccess()
+          }
+          .font(.headline)
+        }
+      }
+    }
+  }
+  
+  public func onPhotoCaptured(perform action: ((AVCapturePhotoOutput, AVCapturePhoto, Error?) -> Void)? = nil) -> CameraView {
+    self.cameraManager.onDidCapturePhoto = action
+    return self
+  }
   
   public func onQRStringDetected(perform action: ((String) -> Void)? = nil) -> CameraView {
     self.cameraManager.onDetectedQRString = action
@@ -34,3 +52,8 @@ public struct CameraView: UIViewControllerRepresentable {
   }
 }
 
+struct CameraView_Previews: PreviewProvider {
+  static var previews: some View {
+    CameraView(cameraManager: CameraManager())
+  }
+}
