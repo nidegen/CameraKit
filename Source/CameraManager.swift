@@ -95,7 +95,7 @@ public class CameraManager: NSObject, ObservableObject {
     #endif
   }
   
-  func capturePhoto() {
+  public func capturePhoto() {
     guard let delegate = self.photoCaptureDelegate else { return }
     let photoSettings = AVCapturePhotoSettings()
     photoSettings.isHighResolutionPhotoEnabled = true
