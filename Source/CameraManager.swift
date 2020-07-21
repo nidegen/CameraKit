@@ -31,6 +31,9 @@ public class CameraManager: NSObject, ObservableObject {
   public override init() {
     super.init()
     metaDataOutputDelegate = self
+    photoCaptureDelegate = self
+    sampleBufferOutputDelegate = self
+    
     if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
       setupCaptureSession()
     }
@@ -40,7 +43,7 @@ public class CameraManager: NSObject, ObservableObject {
   
   public var onDetectedQRString: ((String)->())?
   
-  public var onDidCaptureSampleBuffer: ((String)->())?
+  public var onDidCaptureSampleBuffer: ((AVCaptureOutput, CMSampleBuffer, AVCaptureConnection)->())?
   
   var lastDetectedQRString = ""
   
@@ -240,5 +243,13 @@ extension CameraManager: AVCaptureMetadataOutputObjectsDelegate {
 extension CameraManager: AVCapturePhotoCaptureDelegate {
   public func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
     self.onDidCapturePhoto?(output, photo, error)
+  }
+}
+
+extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
+  public func captureOutput(_ output: AVCaptureOutput,
+                            didOutput sampleBuffer: CMSampleBuffer,
+                            from connection: AVCaptureConnection) {
+    onDidCaptureSampleBuffer?(output, sampleBuffer, connection)
   }
 }
